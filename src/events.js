@@ -28,7 +28,7 @@ module.exports = (function () {
    * @private
    */
   function _dispatch(eventString, args) {
-    utils.logMessage('Emitting event for: ' + eventString);
+    // utils.logMessage('Emitting event for: ' + eventString);
 
     var eventPayload = args[0] || {};
     var idPath = idPaths[eventString];
@@ -63,11 +63,11 @@ module.exports = (function () {
     /** call each of the callbacks */
     utils._each(callbacks, function (fn) {
       if (!fn) return;
-      try {
+      // try {
         fn.apply(null, args);
-      } catch (e) {
-        utils.logError('Error executing handler:', 'events.js', e);
-      }
+      // } catch (e) {
+      //   utils.logError('Error executing handler:', 'events.js', e);
+      // }
     });
   }
 
@@ -88,8 +88,8 @@ module.exports = (function () {
       }
 
       _handlers[eventString] = event;
-    } else {
-      utils.logError('Wrong event name : ' + eventString + ' Valid event names :' + allEvents);
+    // } else {
+    //   utils.logError('Wrong event name : ' + eventString + ' Valid event names :' + allEvents);
     }
   };
 

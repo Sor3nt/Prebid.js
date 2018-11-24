@@ -1,4 +1,4 @@
-import { deepAccess, getBidRequest, logError, triggerPixel, insertHtmlIntoIframe } from './utils';
+import { deepAccess, getBidRequest, triggerPixel, insertHtmlIntoIframe } from './utils';
 import includes from 'core-js/library/fn/array/includes';
 
 const CONSTANTS = require('./constants.json');
@@ -40,7 +40,7 @@ export function processNativeAdUnitParams(params) {
  */
 function typeIsSupported(type) {
   if (!(type && includes(Object.keys(SUPPORTED_TYPES), type))) {
-    logError(`${type} nativeParam is not supported`);
+    // logError(`${type} nativeParam is not supported`);
     return false;
   }
 

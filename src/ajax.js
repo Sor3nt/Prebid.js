@@ -18,19 +18,19 @@ export const ajax = ajaxBuilder();
 
 export function ajaxBuilder(timeout = 3000, {request, done} = {}) {
   return function(url, callback, data, options = {}) {
-    try {
+    // try {
       let x;
       let method = options.method || (data ? 'POST' : 'GET');
       let parser = document.createElement('a');
       parser.href = url;
 
       let callbacks = typeof callback === 'object' && callback !== null ? callback : {
-        success: function() {
-          utils.logMessage('xhr success');
-        },
-        error: function(e) {
-          utils.logError('xhr error', null, e);
-        }
+        // success: function() {
+        //   utils.logMessage('xhr success');
+        // },
+        // error: function(e) {
+        //   utils.logError('xhr error', null, e);
+        // }
       };
 
       if (typeof callback === 'function') {
@@ -54,11 +54,11 @@ export function ajaxBuilder(timeout = 3000, {request, done} = {}) {
       };
 
       // Disabled timeout temporarily to avoid xhr failed requests. https://github.com/prebid/Prebid.js/issues/2648
-      if (!config.getConfig('disableAjaxTimeout')) {
-        x.ontimeout = function () {
-          utils.logError('  xhr timeout after ', x.timeout, 'ms');
-        };
-      }
+      // if (!config.getConfig('disableAjaxTimeout')) {
+      //   x.ontimeout = function () {
+      //     utils.logError('  xhr timeout after ', x.timeout, 'ms');
+      //   };
+      // }
 
       if (method === 'GET' && data) {
         let urlInfo = parseURL(url, options);
@@ -93,8 +93,8 @@ export function ajaxBuilder(timeout = 3000, {request, done} = {}) {
       } else {
         x.send();
       }
-    } catch (error) {
-      utils.logError('xhr construction', error);
-    }
+    // } catch (error) {
+    //   utils.logError('xhr construction', error);
+    // }
   }
 }

@@ -46,11 +46,11 @@ function getBids({bidderCode, auctionId, bidderRequestId, adUnits, labels, src})
       adUnit.sizes
     );
 
-    if (!active) {
-      utils.logInfo(`Size mapping disabled adUnit "${adUnit.code}"`);
-    } else if (filterResults) {
-      utils.logInfo(`Size mapping filtered adUnit "${adUnit.code}" banner sizes from `, filterResults.before, 'to ', filterResults.after);
-    }
+    // if (!active) {
+    //   utils.logInfo(`Size mapping disabled adUnit "${adUnit.code}"`);
+    // } else if (filterResults) {
+    //   utils.logInfo(`Size mapping filtered adUnit "${adUnit.code}" banner sizes from `, filterResults.before, 'to ', filterResults.after);
+    // }
 
     if (active) {
       result.push(adUnit.bids.filter(bid => bid.bidder === bidderCode)
@@ -74,20 +74,20 @@ function getBids({bidderCode, auctionId, bidderRequestId, adUnits, labels, src})
             filterResults
           } = resolveStatus(getLabels(bid, labels), filteredMediaTypes);
 
-          if (!active) {
-            utils.logInfo(`Size mapping deactivated adUnit "${adUnit.code}" bidder "${bid.bidder}"`);
-          } else if (filterResults) {
-            utils.logInfo(`Size mapping filtered adUnit "${adUnit.code}" bidder "${bid.bidder}" banner sizes from `, filterResults.before, 'to ', filterResults.after);
-          }
+          // if (!active) {
+          //   utils.logInfo(`Size mapping deactivated adUnit "${adUnit.code}" bidder "${bid.bidder}"`);
+          // } else if (filterResults) {
+          //   utils.logInfo(`Size mapping filtered adUnit "${adUnit.code}" bidder "${bid.bidder}" banner sizes from `, filterResults.before, 'to ', filterResults.after);
+          // }
 
           if (utils.isValidMediaTypes(mediaTypes)) {
             bid = Object.assign({}, bid, {
               mediaTypes
             });
-          } else {
-            utils.logError(
-              `mediaTypes is not correctly configured for adunit ${adUnit.code}`
-            );
+          // } else {
+          //   utils.logError(
+          //     `mediaTypes is not correctly configured for adunit ${adUnit.code}`
+          //   );
           }
 
           if (active) {
@@ -236,9 +236,9 @@ exports.makeBidRequests = function(adUnits, auctionStart, auctionId, cbTimeout, 
       refererInfo
     };
     const adapter = _bidderRegistry[bidderCode];
-    if (!adapter) {
-      utils.logError(`Trying to make a request for bidder that does not exist: ${bidderCode}`);
-    }
+    // if (!adapter) {
+    //   utils.logError(`Trying to make a request for bidder that does not exist: ${bidderCode}`);
+    // }
 
     if (adapter && bidderRequest.bids && bidderRequest.bids.length !== 0) {
       bidRequests.push(bidderRequest);
@@ -277,22 +277,22 @@ exports.checkBidRequestSizes = (adUnits) => {
       adUnit.sizes = normalizedSize;
     }
 
-    if (mediaTypes && mediaTypes.video) {
-      const video = mediaTypes.video;
-      if (video.playerSize) {
-        if (Array.isArray(video.playerSize) && video.playerSize.length === 1 && video.playerSize.every(isArrayOfNums)) {
-          adUnit.sizes = video.playerSize;
-        } else if (isArrayOfNums(video.playerSize)) {
-          let newPlayerSize = [];
-          newPlayerSize.push(video.playerSize);
-          utils.logInfo(`Transforming video.playerSize from ${video.playerSize} to ${newPlayerSize} so it's in the proper format.`);
-          adUnit.sizes = video.playerSize = newPlayerSize;
-        } else {
-          utils.logError('Detected incorrect configuration of mediaTypes.video.playerSize.  Please specify only one set of dimensions in a format like: [[640, 480]]. Removing invalid mediaTypes.video.playerSize property from request.');
-          delete adUnit.mediaTypes.video.playerSize;
-        }
-      }
-    }
+    // if (mediaTypes && mediaTypes.video) {
+    //   const video = mediaTypes.video;
+    //   if (video.playerSize) {
+    //     if (Array.isArray(video.playerSize) && video.playerSize.length === 1 && video.playerSize.every(isArrayOfNums)) {
+    //       adUnit.sizes = video.playerSize;
+    //     } else if (isArrayOfNums(video.playerSize)) {
+    //       let newPlayerSize = [];
+    //       newPlayerSize.push(video.playerSize);
+    //       utils.logInfo(`Transforming video.playerSize from ${video.playerSize} to ${newPlayerSize} so it's in the proper format.`);
+    //       adUnit.sizes = video.playerSize = newPlayerSize;
+    //     } else {
+    //       // utils.logError('Detected incorrect configuration of mediaTypes.video.playerSize.  Please specify only one set of dimensions in a format like: [[640, 480]]. Removing invalid mediaTypes.video.playerSize property from request.');
+    //       delete adUnit.mediaTypes.video.playerSize;
+    //     }
+    //   }
+    // }
 
     if (mediaTypes && mediaTypes.native) {
       const native = mediaTypes.native;
@@ -315,7 +315,7 @@ exports.checkBidRequestSizes = (adUnits) => {
 
 exports.callBids = (adUnits, bidRequests, addBidResponse, doneCb, requestCallbacks, requestBidsTimeout) => {
   if (!bidRequests.length) {
-    utils.logWarn('callBids executed with no bidRequests.  Were they filtered by labels or sizing?');
+    // utils.logWarn('callBids executed with no bidRequests.  Were they filtered by labels or sizing?');
     return;
   }
 
@@ -408,11 +408,11 @@ exports.registerBidAdapter = function (bidAdaptor, bidderCode, {supportedMediaTy
       if (includes(supportedMediaTypes, 'native')) {
         nativeAdapters.push(bidderCode);
       }
-    } else {
-      utils.logError('Bidder adaptor error for bidder code: ' + bidderCode + 'bidder must implement a callBids() function');
+    // } else {
+    //   utils.logError('Bidder adaptor error for bidder code: ' + bidderCode + 'bidder must implement a callBids() function');
     }
-  } else {
-    utils.logError('bidAdaptor or bidderCode not specified');
+  // } else {
+  //   utils.logError('bidAdaptor or bidderCode not specified');
   }
 };
 
@@ -432,7 +432,7 @@ exports.aliasBidAdapter = function (bidderCode, alias) {
         exports.aliasRegistry[alias] = bidderCode;
       }
     } else {
-      try {
+      // try {
         let newAdapter;
         let supportedMediaTypes = getSupportedMediaTypes(bidderCode);
         // Have kept old code to support backward compatibilitiy.
@@ -448,44 +448,44 @@ exports.aliasBidAdapter = function (bidderCode, alias) {
         this.registerBidAdapter(newAdapter, alias, {
           supportedMediaTypes
         });
-      } catch (e) {
-        utils.logError(bidderCode + ' bidder does not currently support aliasing.', 'adaptermanager.aliasBidAdapter');
-      }
+      // } catch (e) {
+      //   utils.logError(bidderCode + ' bidder does not currently support aliasing.', 'adaptermanager.aliasBidAdapter');
+      // }
     }
-  } else {
-    utils.logMessage('alias name "' + alias + '" has been already specified.');
+  // } else {
+    // utils.logMessage('alias name "' + alias + '" has been already specified.');
   }
 };
-
-exports.registerAnalyticsAdapter = function ({adapter, code}) {
-  if (adapter && code) {
-    if (typeof adapter.enableAnalytics === 'function') {
-      adapter.code = code;
-      _analyticsRegistry[code] = adapter;
-    } else {
-      utils.logError(`Prebid Error: Analytics adaptor error for analytics "${code}"
-        analytics adapter must implement an enableAnalytics() function`);
-    }
-  } else {
-    utils.logError('Prebid Error: analyticsAdapter or analyticsCode not specified');
-  }
-};
-
-exports.enableAnalytics = function (config) {
-  if (!utils.isArray(config)) {
-    config = [config];
-  }
-
-  utils._each(config, adapterConfig => {
-    var adapter = _analyticsRegistry[adapterConfig.provider];
-    if (adapter) {
-      adapter.enableAnalytics(adapterConfig);
-    } else {
-      utils.logError(`Prebid Error: no analytics adapter found in registry for
-        ${adapterConfig.provider}.`);
-    }
-  });
-};
+//
+// exports.registerAnalyticsAdapter = function ({adapter, code}) {
+//   if (adapter && code) {
+//     if (typeof adapter.enableAnalytics === 'function') {
+//       adapter.code = code;
+//       _analyticsRegistry[code] = adapter;
+//     } else {
+//       utils.logError(`Prebid Error: Analytics adaptor error for analytics "${code}"
+//         analytics adapter must implement an enableAnalytics() function`);
+//     }
+//   } else {
+//     utils.logError('Prebid Error: analyticsAdapter or analyticsCode not specified');
+//   }
+// };
+//
+// exports.enableAnalytics = function (config) {
+//   if (!utils.isArray(config)) {
+//     config = [config];
+//   }
+//
+//   utils._each(config, adapterConfig => {
+//     var adapter = _analyticsRegistry[adapterConfig.provider];
+//     if (adapter) {
+//       adapter.enableAnalytics(adapterConfig);
+//     } else {
+//       utils.logError(`Prebid Error: no analytics adapter found in registry for
+//         ${adapterConfig.provider}.`);
+//     }
+//   });
+// };
 
 exports.getBidAdapter = function(bidder) {
   return _bidderRegistry[bidder];
@@ -498,16 +498,16 @@ exports.setS2STestingModule = function (module) {
 };
 
 function tryCallBidderMethod(bidder, method, param) {
-  try {
+  // try {
     const adapter = _bidderRegistry[bidder];
     const spec = adapter.getSpec();
     if (spec && spec[method] && typeof spec[method] === 'function') {
       utils.logInfo(`Invoking ${bidder}.${method}`);
       spec[method](param);
     }
-  } catch (e) {
-    utils.logWarn(`Error calling ${method} of ${bidder}`);
-  }
+  // } catch (e) {
+  //   utils.logWarn(`Error calling ${method} of ${bidder}`);
+  // }
 }
 
 exports.callTimedOutBidders = function(adUnits, timedOutBidders, cbTimeout) {

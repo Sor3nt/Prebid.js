@@ -17,7 +17,7 @@ function logWarn(msg) {
 
 function enableOverrides(overrides, fromSession = false) {
   config.setConfig({'debug': true});
-  logMessage(`bidder overrides enabled${fromSession ? ' from session' : ''}`);
+  // logMessage(`bidder overrides enabled${fromSession ? ' from session' : ''}`);
 
   if (boundHook) {
     addBidResponse.removeHook(boundHook);
@@ -30,13 +30,13 @@ function enableOverrides(overrides, fromSession = false) {
 export function disableOverrides() {
   if (boundHook) {
     addBidResponse.removeHook(boundHook);
-    logMessage('bidder overrides disabled');
+    // logMessage('bidder overrides disabled');
   }
 }
 
 export function addBidResponseHook(overrides, adUnitCode, bid, next) {
   if (Array.isArray(overrides.bidders) && overrides.bidders.indexOf(bid.bidderCode) === -1) {
-    logWarn(`bidder '${bid.bidderCode}' excluded from auction by bidder overrides`);
+    // logWarn(`bidder '${bid.bidderCode}' excluded from auction by bidder overrides`);
     return;
   }
 
@@ -53,7 +53,7 @@ export function addBidResponseHook(overrides, adUnitCode, bid, next) {
 
       Object.keys(overrideBid).filter(key => ['bidder', 'adUnitCode'].indexOf(key) === -1).forEach((key) => {
         let value = overrideBid[key];
-        logMessage(`bidder overrides changed '${adUnitCode}/${bid.bidderCode}' bid.${key} from '${bid[key]}' to '${value}'`);
+        // logMessage(`bidder overrides changed '${adUnitCode}/${bid.bidderCode}' bid.${key} from '${bid[key]}' to '${value}'`);
         bid[key] = value;
       });
     });

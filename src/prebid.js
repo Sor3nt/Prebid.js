@@ -41,7 +41,7 @@ $$PREBID_GLOBAL$$.libLoaded = true;
 
 // version auto generated from build
 $$PREBID_GLOBAL$$.version = 'v$prebid.version$';
-utils.logInfo('Prebid.js v$prebid.version$ loaded');
+// utils.logInfo('Prebid.js v$prebid.version$ loaded');
 
 // create adUnit array
 $$PREBID_GLOBAL$$.adUnits = $$PREBID_GLOBAL$$.adUnits || [];
@@ -55,7 +55,7 @@ function checkDefinedPlacement(id) {
     .filter(uniques);
 
   if (!utils.contains(adUnitCodes, id)) {
-    utils.logError('The "' + id + '" placement is not defined.');
+    // utils.logError('The "' + id + '" placement is not defined.');
     return;
   }
 
@@ -81,17 +81,17 @@ function setRenderSize(doc, width, height) {
  * @alias module:pbjs.getAdserverTargetingForAdUnitCodeStr
  * @return {Array}  returnObj return bids array
  */
-$$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCodeStr = function (adunitCode) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCodeStr', arguments);
-
-  // call to retrieve bids array
-  if (adunitCode) {
-    var res = $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCode(adunitCode);
-    return utils.transformAdServerTargetingObj(res);
-  } else {
-    utils.logMessage('Need to call getAdserverTargetingForAdUnitCodeStr with adunitCode');
-  }
-};
+// $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCodeStr = function (adunitCode) {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCodeStr', arguments);
+//
+//   // call to retrieve bids array
+//   if (adunitCode) {
+//     var res = $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCode(adunitCode);
+//     return utils.transformAdServerTargetingObj(res);
+//   } else {
+//     utils.logMessage('Need to call getAdserverTargetingForAdUnitCodeStr with adunitCode');
+//   }
+// };
 
 /**
  * This function returns the query string targeting parameters available at this moment for a given ad unit. Note that some bidder's response may not have been received if you call this function too quickly after the requests are sent.
@@ -99,9 +99,9 @@ $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCodeStr = function (adunitCode) {
  * @alias module:pbjs.getAdserverTargetingForAdUnitCode
  * @returns {Object}  returnObj return bids
  */
-$$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCode = function(adUnitCode) {
-  return $$PREBID_GLOBAL$$.getAdserverTargeting(adUnitCode)[adUnitCode];
-};
+// $$PREBID_GLOBAL$$.getAdserverTargetingForAdUnitCode = function(adUnitCode) {
+//   return $$PREBID_GLOBAL$$.getAdserverTargeting(adUnitCode)[adUnitCode];
+// };
 
 /**
  * returns all ad server targeting for all ad units
@@ -194,11 +194,11 @@ $$PREBID_GLOBAL$$.setTargetingForGPTAsync = function (adUnit, customSlotMatching
  * @alias module:pbjs.setTargetingForAst
  */
 $$PREBID_GLOBAL$$.setTargetingForAst = function() {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForAn', arguments);
-  if (!targeting.isApntagDefined()) {
-    utils.logError('window.apntag is not defined on the page');
-    return;
-  }
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForAn', arguments);
+  // if (!targeting.isApntagDefined()) {
+  //   utils.logError('window.apntag is not defined on the page');
+  //   return;
+  // }
 
   targeting.setTargetingForAst();
 
@@ -226,8 +226,8 @@ function emitAdRenderFail(reason, message, bid) {
  * @alias module:pbjs.renderAd
  */
 $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.renderAd', arguments);
-  utils.logMessage('Calling renderAd with adId :' + id);
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.renderAd', arguments);
+  // utils.logMessage('Calling renderAd with adId :' + id);
 
   if (doc && id) {
     try {
@@ -246,14 +246,14 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
 
         const { height, width, ad, mediaType, adUrl, renderer } = bid;
 
-        const creativeComment = document.createComment(`Creative ${bid.creativeId} served by ${bid.bidder} Prebid.js Header Bidding`);
-        utils.insertElement(creativeComment, doc, 'body');
+        // const creativeComment = document.createComment(`Creative ${bid.creativeId} served by ${bid.bidder} Prebid.js Header Bidding`);
+        // utils.insertElement(creativeComment, doc, 'body');
 
         if (isRendererRequired(renderer)) {
           executeRenderer(renderer, bid);
         } else if ((doc === document && !utils.inIframe()) || mediaType === 'video') {
-          const message = `Error trying to write ad. Ad render call ad id ${id} was prevented from writing to the main document.`;
-          emitAdRenderFail(PREVENT_WRITING_ON_MAIN_DOCUMENT, message, bid);
+          // const message = `Error trying to write ad. Ad render call ad id ${id} was prevented from writing to the main document.`;
+          emitAdRenderFail(PREVENT_WRITING_ON_MAIN_DOCUMENT, ``, bid);
         } else if (ad) {
           doc.write(ad);
           doc.close();
@@ -271,20 +271,20 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
           setRenderSize(doc, width, height);
           utils.callBurl(bid);
         } else {
-          const message = `Error trying to write ad. No ad for bid response id: ${id}`;
-          emitAdRenderFail(NO_AD, message, bid);
+          // const message = `Error trying to write ad. No ad for bid response id: ${id}`;
+          emitAdRenderFail(NO_AD, ``, bid);
         }
       } else {
-        const message = `Error trying to write ad. Cannot find ad by given id : ${id}`;
-        emitAdRenderFail(CANNOT_FIND_AD, message);
+        // const message = `Error trying to write ad. Cannot find ad by given id : ${id}`;
+        emitAdRenderFail(CANNOT_FIND_AD, ``);
       }
     } catch (e) {
-      const message = `Error trying to write ad Id :${id} to the page:${e.message}`;
-      emitAdRenderFail(EXCEPTION, message);
+      // const message = `Error trying to write ad Id :${id} to the page:${e.message}`;
+      emitAdRenderFail(EXCEPTION, ``);
     }
   } else {
-    const message = `Error trying to write ad Id :${id} to the page. Missing document or adId`;
-    emitAdRenderFail(MISSING_DOC_OR_ADID, message);
+    // const message = `Error trying to write ad Id :${id} to the page. Missing document or adId`;
+    emitAdRenderFail(MISSING_DOC_OR_ADID, ``);
   }
 };
 
@@ -293,16 +293,16 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
  * @param  {string} adUnitCode the adUnitCode to remove
  * @alias module:pbjs.removeAdUnit
  */
-$$PREBID_GLOBAL$$.removeAdUnit = function (adUnitCode) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.removeAdUnit', arguments);
-  if (adUnitCode) {
-    for (var i = 0; i < $$PREBID_GLOBAL$$.adUnits.length; i++) {
-      if ($$PREBID_GLOBAL$$.adUnits[i].code === adUnitCode) {
-        $$PREBID_GLOBAL$$.adUnits.splice(i, 1);
-      }
-    }
-  }
-};
+// $$PREBID_GLOBAL$$.removeAdUnit = function (adUnitCode) {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.removeAdUnit', arguments);
+//   if (adUnitCode) {
+//     for (var i = 0; i < $$PREBID_GLOBAL$$.adUnits.length; i++) {
+//       if ($$PREBID_GLOBAL$$.adUnits[i].code === adUnitCode) {
+//         $$PREBID_GLOBAL$$.adUnits.splice(i, 1);
+//       }
+//     }
+//   }
+// };
 
 /**
  * @param {Object} requestOptions
@@ -318,7 +318,7 @@ $$PREBID_GLOBAL$$.requestBids = createHook('asyncSeries', function ({ bidsBackHa
   const cbTimeout = timeout || config.getConfig('bidderTimeout');
   adUnits = adUnits || $$PREBID_GLOBAL$$.adUnits;
 
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.requestBids', arguments);
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.requestBids', arguments);
 
   if (adUnitCodes && adUnitCodes.length) {
     // if specific adUnitCodes supplied filter adUnits for those codes
@@ -360,7 +360,7 @@ $$PREBID_GLOBAL$$.requestBids = createHook('asyncSeries', function ({ bidsBackHa
       const bidderEligible = adUnitMediaTypes.some(type => includes(bidderMediaTypes, type));
       if (!bidderEligible) {
         // drop the bidder from the ad unit if it's not compatible
-        utils.logWarn(utils.unsupportedBidderMessage(adUnit, bidder));
+        // utils.logWarn(utils.unsupportedBidderMessage(adUnit, bidder));
         adUnit.bids = adUnit.bids.filter(bid => bid.bidder !== bidder);
       }
     });
@@ -368,15 +368,15 @@ $$PREBID_GLOBAL$$.requestBids = createHook('asyncSeries', function ({ bidsBackHa
   });
 
   if (!adUnits || adUnits.length === 0) {
-    utils.logMessage('No adUnits configured. No bids requested.');
-    if (typeof bidsBackHandler === 'function') {
+    // utils.logMessage('No adUnits configured. No bids requested.');
+    // if (typeof bidsBackHandler === 'function') {
       // executeCallback, this will only be called in case of first request
-      try {
+      // try {
         bidsBackHandler();
-      } catch (e) {
-        utils.logError('Error executing bidsBackHandler', null, e);
-      }
-    }
+      // } catch (e) {
+      //   utils.logError('Error executing bidsBackHandler', null, e);
+      // }
+    // }
     return;
   }
 
@@ -419,14 +419,14 @@ $$PREBID_GLOBAL$$.addAdUnits = function (adUnitArr) {
  * Currently `bidWon` is the only event that accepts an `id` parameter.
  */
 $$PREBID_GLOBAL$$.onEvent = function (event, handler, id) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.onEvent', arguments);
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.onEvent', arguments);
   if (!utils.isFn(handler)) {
-    utils.logError('The event handler provided is not a function and was not set on event "' + event + '".');
+    // utils.logError('The event handler provided is not a function and was not set on event "' + event + '".');
     return;
   }
 
   if (id && !eventValidators[event].call(null, id)) {
-    utils.logError('The id provided is not valid for event "' + event + '" and no handler was set.');
+    // utils.logError('The id provided is not valid for event "' + event + '" and no handler was set.');
     return;
   }
 
@@ -439,14 +439,14 @@ $$PREBID_GLOBAL$$.onEvent = function (event, handler, id) {
  * @param {string} id an identifier in the context of the event (see `$$PREBID_GLOBAL$$.onEvent`)
  * @alias module:pbjs.offEvent
  */
-$$PREBID_GLOBAL$$.offEvent = function (event, handler, id) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.offEvent', arguments);
-  if (id && !eventValidators[event].call(null, id)) {
-    return;
-  }
-
-  events.off(event, handler, id);
-};
+// $$PREBID_GLOBAL$$.offEvent = function (event, handler, id) {
+//   // utils.logInfo('Invoking $$PREBID_GLOBAL$$.offEvent', arguments);
+//   if (id && !eventValidators[event].call(null, id)) {
+//     return;
+//   }
+//
+//   events.off(event, handler, id);
+// };
 
 /*
  * Wrapper to register bidderAdapter externally (adaptermanager.registerBidAdapter())
@@ -455,12 +455,12 @@ $$PREBID_GLOBAL$$.offEvent = function (event, handler, id) {
  * @alias module:pbjs.registerBidAdapter
  */
 $$PREBID_GLOBAL$$.registerBidAdapter = function (bidderAdaptor, bidderCode) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.registerBidAdapter', arguments);
-  try {
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.registerBidAdapter', arguments);
+  // try {
     adaptermanager.registerBidAdapter(bidderAdaptor(), bidderCode);
-  } catch (e) {
-    utils.logError('Error registering bidder adapter : ' + e.message);
-  }
+  // } catch (e) {
+  //   utils.logError('Error registering bidder adapter : ' + e.message);
+  // }
 };
 
 /**
@@ -468,14 +468,14 @@ $$PREBID_GLOBAL$$.registerBidAdapter = function (bidderAdaptor, bidderCode) {
  * @param  {Object} options [description]
  * @alias module:pbjs.registerAnalyticsAdapter
  */
-$$PREBID_GLOBAL$$.registerAnalyticsAdapter = function (options) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.registerAnalyticsAdapter', arguments);
-  try {
-    adaptermanager.registerAnalyticsAdapter(options);
-  } catch (e) {
-    utils.logError('Error registering analytics adapter : ' + e.message);
-  }
-};
+// $$PREBID_GLOBAL$$.registerAnalyticsAdapter = function (options) {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.registerAnalyticsAdapter', arguments);
+//   try {
+//     adaptermanager.registerAnalyticsAdapter(options);
+//   } catch (e) {
+//     utils.logError('Error registering analytics adapter : ' + e.message);
+//   }
+// };
 
 /**
  * Wrapper to bidfactory.createBid()
@@ -494,10 +494,10 @@ $$PREBID_GLOBAL$$.createBid = function (statusCode) {
  * @param  {Function} callback [description]
  * @alias module:pbjs.loadScript
  */
-$$PREBID_GLOBAL$$.loadScript = function (tagSrc, callback, useCache) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.loadScript', arguments);
-  loadScript(tagSrc, callback, useCache);
-};
+// $$PREBID_GLOBAL$$.loadScript = function (tagSrc, callback, useCache) {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.loadScript', arguments);
+//   loadScript(tagSrc, callback, useCache);
+// };
 
 /**
  * Enable sending analytics data to the analytics provider of your
@@ -513,14 +513,14 @@ $$PREBID_GLOBAL$$.loadScript = function (tagSrc, callback, useCache) {
  * @param {Object} config.options The options for this particular analytics adapter.  This will likely vary between adapters.
  * @alias module:pbjs.enableAnalytics
  */
-$$PREBID_GLOBAL$$.enableAnalytics = function (config) {
-  if (config && !utils.isEmpty(config)) {
-    utils.logInfo('Invoking $$PREBID_GLOBAL$$.enableAnalytics for: ', config);
-    adaptermanager.enableAnalytics(config);
-  } else {
-    utils.logError('$$PREBID_GLOBAL$$.enableAnalytics should be called with option {}');
-  }
-};
+// $$PREBID_GLOBAL$$.enableAnalytics = function (config) {
+//   if (config && !utils.isEmpty(config)) {
+//     utils.logInfo('Invoking $$PREBID_GLOBAL$$.enableAnalytics for: ', config);
+//     adaptermanager.enableAnalytics(config);
+//   } else {
+//     utils.logError('$$PREBID_GLOBAL$$.enableAnalytics should be called with option {}');
+//   }
+// };
 
 /**
  * @alias module:pbjs.aliasBidder
@@ -582,11 +582,11 @@ $$PREBID_GLOBAL$$.getAllWinningBids = function () {
  * Get all of the bids that have won their respective auctions.
  * @return {Array<AdapterBidResponse>} A list of bids that have won their respective auctions.
  */
-$$PREBID_GLOBAL$$.getAllPrebidWinningBids = function () {
-  return auctionManager.getBidsReceived()
-    .filter(bid => bid.status === CONSTANTS.BID_STATUS.BID_TARGETING_SET)
-    .map(removeRequestId);
-};
+// $$PREBID_GLOBAL$$.getAllPrebidWinningBids = function () {
+//   return auctionManager.getBidsReceived()
+//     .filter(bid => bid.status === CONSTANTS.BID_STATUS.BID_TARGETING_SET)
+//     .map(removeRequestId);
+// };
 
 /**
  * Get array of highest cpm bids for all adUnits, or highest cpm bid
@@ -595,11 +595,11 @@ $$PREBID_GLOBAL$$.getAllPrebidWinningBids = function () {
  * @alias module:pbjs.getHighestCpmBids
  * @return {Array} array containing highest cpm bid object(s)
  */
-$$PREBID_GLOBAL$$.getHighestCpmBids = function (adUnitCode) {
-  let bidsReceived = getHighestCpmBidsFromBidPool(auctionManager.getBidsReceived(), getLatestHighestCpmBid);
-  return targeting.getWinningBids(adUnitCode, bidsReceived)
-    .map(removeRequestId);
-};
+// $$PREBID_GLOBAL$$.getHighestCpmBids = function (adUnitCode) {
+//   let bidsReceived = getHighestCpmBidsFromBidPool(auctionManager.getBidsReceived(), getLatestHighestCpmBid);
+//   return targeting.getWinningBids(adUnitCode, bidsReceived)
+//     .map(removeRequestId);
+// };
 
 /**
  * Mark the winning bid as used, should only be used in conjunction with video
@@ -609,24 +609,24 @@ $$PREBID_GLOBAL$$.getHighestCpmBids = function (adUnitCode) {
  *
  * @alias module:pbjs.markWinningBidAsUsed
 */
-$$PREBID_GLOBAL$$.markWinningBidAsUsed = function (markBidRequest) {
-  let bids = [];
-
-  if (markBidRequest.adUnitCode && markBidRequest.adId) {
-    bids = auctionManager.getBidsReceived()
-      .filter(bid => bid.adId === markBidRequest.adId && bid.adUnitCode === markBidRequest.adUnitCode);
-  } else if (markBidRequest.adUnitCode) {
-    bids = targeting.getWinningBids(markBidRequest.adUnitCode);
-  } else if (markBidRequest.adId) {
-    bids = auctionManager.getBidsReceived().filter(bid => bid.adId === markBidRequest.adId);
-  } else {
-    utils.logWarn('Inproper usage of markWinningBidAsUsed. It\'ll need an adUnitCode and/or adId to function.');
-  }
-
-  if (bids.length > 0) {
-    bids[0].status = CONSTANTS.BID_STATUS.RENDERED;
-  }
-};
+// $$PREBID_GLOBAL$$.markWinningBidAsUsed = function (markBidRequest) {
+//   let bids = [];
+//
+//   if (markBidRequest.adUnitCode && markBidRequest.adId) {
+//     bids = auctionManager.getBidsReceived()
+//       .filter(bid => bid.adId === markBidRequest.adId && bid.adUnitCode === markBidRequest.adUnitCode);
+//   } else if (markBidRequest.adUnitCode) {
+//     bids = targeting.getWinningBids(markBidRequest.adUnitCode);
+//   } else if (markBidRequest.adId) {
+//     bids = auctionManager.getBidsReceived().filter(bid => bid.adId === markBidRequest.adId);
+//   } else {
+//     utils.logWarn('Inproper usage of markWinningBidAsUsed. It\'ll need an adUnitCode and/or adId to function.');
+//   }
+//
+//   if (bids.length > 0) {
+//     bids[0].status = CONSTANTS.BID_STATUS.RENDERED;
+//   }
+// };
 
 /**
  * Get Prebid config options
@@ -706,15 +706,15 @@ $$PREBID_GLOBAL$$.que.push(() => listenMessagesFromCreative());
  * @alias module:pbjs.cmd.push
  */
 $$PREBID_GLOBAL$$.cmd.push = function(command) {
-  if (typeof command === 'function') {
-    try {
+  // if (typeof command === 'function') {
+    // try {
       command.call();
-    } catch (e) {
-      utils.logError('Error processing command :', e.message, e.stack);
-    }
-  } else {
-    utils.logError('Commands written into $$PREBID_GLOBAL$$.cmd.push must be wrapped in a function');
-  }
+    // } catch (e) {
+      // utils.logError('Error processing command :', e.message, e.stack);
+    // }
+  // } else {
+    // utils.logError('Commands written into $$PREBID_GLOBAL$$.cmd.push must be wrapped in a function');
+  // }
 };
 
 $$PREBID_GLOBAL$$.que.push = $$PREBID_GLOBAL$$.cmd.push;
@@ -722,12 +722,12 @@ $$PREBID_GLOBAL$$.que.push = $$PREBID_GLOBAL$$.cmd.push;
 function processQueue(queue) {
   queue.forEach(function(cmd) {
     if (typeof cmd.called === 'undefined') {
-      try {
+      // try {
         cmd.call();
         cmd.called = true;
-      } catch (e) {
-        utils.logError('Error processing command :', 'prebid.js', e);
-      }
+      // } catch (e) {
+      //   utils.logError('Error processing command :', 'prebid.js', e);
+      // }
     }
   });
 }

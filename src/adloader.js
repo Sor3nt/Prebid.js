@@ -14,11 +14,11 @@ const _vendorWhitelist = [
  */
 exports.loadExternalScript = function(url, moduleCode) {
   if (!moduleCode || !url) {
-    utils.logError('cannot load external script without url and moduleCode');
+    //utils.logError('cannot load external script without url and moduleCode');
     return;
   }
   if (!includes(_vendorWhitelist, moduleCode)) {
-    utils.logError(`${moduleCode} not whitelisted for loading external JavaScript`);
+    //utils.logError(`${moduleCode} not whitelisted for loading external JavaScript`);
     return;
   }
   // only load each asset once
@@ -26,7 +26,7 @@ exports.loadExternalScript = function(url, moduleCode) {
     return;
   }
 
-  utils.logWarn(`module ${moduleCode} is loading external JavaScript`);
+  //utils.logWarn(`module ${moduleCode} is loading external JavaScript`);
   const script = document.createElement('script');
   script.type = 'text/javascript';
   script.async = true;
@@ -46,7 +46,7 @@ exports.loadScript = function (tagSrc, callback, cacheRequest) {
   //
   // callback = callback || noop;
   if (!tagSrc) {
-    utils.logError('Error attempting to request empty URL', 'adloader.js:loadScript');
+    //utils.logError('Error attempting to request empty URL', 'adloader.js:loadScript');
     return;
   }
 
@@ -77,7 +77,7 @@ exports.loadScript = function (tagSrc, callback, cacheRequest) {
             _requestCache[tagSrc].callbacks[i]();
           }
         } catch (e) {
-          utils.logError('Error executing callback', 'adloader.js:loadScript', e);
+          //utils.logError('Error executing callback', 'adloader.js:loadScript', e);
         }
       });
     }
