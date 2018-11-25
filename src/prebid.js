@@ -1,15 +1,15 @@
 /** @module pbjs */
 
 import { getGlobal } from './prebidGlobal';
-import { flatten, uniques, isGptPubadsDefined, adUnitsFilter, removeRequestId, getLatestHighestCpmBid } from './utils';
+import { flatten, uniques, isGptPubadsDefined } from './utils';
 import { listenMessagesFromCreative } from './secureCreatives';
 import { userSync } from 'src/userSync.js';
-import { loadScript } from './adloader';
+// import { loadScript } from './adloader';
 import { config } from './config';
 import { auctionManager } from './auctionManager';
-import { targeting, getHighestCpmBidsFromBidPool } from './targeting';
+import { targeting } from './targeting';
 import { createHook } from 'src/hook';
-import { sessionLoader } from 'src/debugging';
+// import { sessionLoader } from 'src/debugging';
 import includes from 'core-js/library/fn/array/includes';
 import { adunitCounter } from './adUnits';
 import { isRendererRequired, executeRenderer } from './Renderer';
@@ -23,15 +23,15 @@ const events = require('./events');
 const { triggerUserSyncs } = userSync;
 
 /* private variables */
-const { ADD_AD_UNITS, BID_WON, REQUEST_BIDS, SET_TARGETING, AD_RENDER_FAILED } = CONSTANTS.EVENTS;
-const { PREVENT_WRITING_ON_MAIN_DOCUMENT, NO_AD, EXCEPTION, CANNOT_FIND_AD, MISSING_DOC_OR_ADID } = CONSTANTS.AD_RENDER_FAILED_REASON;
+const { ADD_AD_UNITS, BID_WON, REQUEST_BIDS, SET_TARGETING } = CONSTANTS.EVENTS;
+// const { PREVENT_WRITING_ON_MAIN_DOCUMENT, NO_AD, EXCEPTION, CANNOT_FIND_AD, MISSING_DOC_OR_ADID } = CONSTANTS.AD_RENDER_FAILED_REASON;
 
 const eventValidators = {
   bidWon: checkDefinedPlacement
 };
 
 // initialize existing debugging sessions if present
-sessionLoader();
+// sessionLoader();
 
 /* Public vars */
 $$PREBID_GLOBAL$$.bidderSettings = $$PREBID_GLOBAL$$.bidderSettings || {};
@@ -108,11 +108,11 @@ function setRenderSize(doc, width, height) {
  * @return {Object} Map of adUnitCodes and targeting values []
  * @alias module:pbjs.getAdserverTargeting
  */
-
-$$PREBID_GLOBAL$$.getAdserverTargeting = function (adUnitCode) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.getAdserverTargeting', arguments);
-  return targeting.getAllTargeting(adUnitCode);
-};
+//
+// $$PREBID_GLOBAL$$.getAdserverTargeting = function (adUnitCode) {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.getAdserverTargeting', arguments);
+//   return targeting.getAllTargeting(adUnitCode);
+// };
 
 /**
  * This function returns the bid responses at the given moment.
@@ -120,26 +120,26 @@ $$PREBID_GLOBAL$$.getAdserverTargeting = function (adUnitCode) {
  * @return {Object}            map | object that contains the bidResponses
  */
 
-$$PREBID_GLOBAL$$.getBidResponses = function () {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.getBidResponses', arguments);
-  const responses = auctionManager.getBidsReceived()
-    .filter(adUnitsFilter.bind(this, auctionManager.getAdUnitCodes()));
-
-  // find the last auction id to get responses for most recent auction only
-  const currentAuctionId = responses && responses.length && responses[responses.length - 1].auctionId;
-
-  return responses
-    .map(bid => bid.adUnitCode)
-    .filter(uniques).map(adUnitCode => responses
-      .filter(bid => bid.auctionId === currentAuctionId && bid.adUnitCode === adUnitCode))
-    .filter(bids => bids && bids[0] && bids[0].adUnitCode)
-    .map(bids => {
-      return {
-        [bids[0].adUnitCode]: { bids: bids.map(removeRequestId) }
-      };
-    })
-    .reduce((a, b) => Object.assign(a, b), {});
-};
+// $$PREBID_GLOBAL$$.getBidResponses = function () {
+//   utils.logInfo('Invoking $$PREBID_GLOBAL$$.getBidResponses', arguments);
+//   const responses = auctionManager.getBidsReceived()
+//     .filter(adUnitsFilter.bind(this, auctionManager.getAdUnitCodes()));
+//
+//   // find the last auction id to get responses for most recent auction only
+//   const currentAuctionId = responses && responses.length && responses[responses.length - 1].auctionId;
+//
+//   return responses
+//     .map(bid => bid.adUnitCode)
+//     .filter(uniques).map(adUnitCode => responses
+//       .filter(bid => bid.auctionId === currentAuctionId && bid.adUnitCode === adUnitCode))
+//     .filter(bids => bids && bids[0] && bids[0].adUnitCode)
+//     .map(bids => {
+//       return {
+//         [bids[0].adUnitCode]: { bids: bids.map(removeRequestId) }
+//       };
+//     })
+//     .reduce((a, b) => Object.assign(a, b), {});
+// };
 
 /**
  * Returns bidResponses for the specified adUnitCode
@@ -151,7 +151,7 @@ $$PREBID_GLOBAL$$.getBidResponses = function () {
 $$PREBID_GLOBAL$$.getBidResponsesForAdUnitCode = function (adUnitCode) {
   const bids = auctionManager.getBidsReceived().filter(bid => bid.adUnitCode === adUnitCode);
   return {
-    bids: bids.map(removeRequestId)
+    bids: bids
   };
 };
 
@@ -193,31 +193,31 @@ $$PREBID_GLOBAL$$.setTargetingForGPTAsync = function (adUnit, customSlotMatching
  * Set query string targeting on all AST (AppNexus Seller Tag) ad units. Note that this function has to be called after all ad units on page are defined. For working example code, see [Using Prebid.js with AppNexus Publisher Ad Server](http://prebid.org/dev-docs/examples/use-prebid-with-appnexus-ad-server.html).
  * @alias module:pbjs.setTargetingForAst
  */
-$$PREBID_GLOBAL$$.setTargetingForAst = function() {
-  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForAn', arguments);
-  // if (!targeting.isApntagDefined()) {
-  //   utils.logError('window.apntag is not defined on the page');
-  //   return;
-  // }
+// $$PREBID_GLOBAL$$.setTargetingForAst = function() {
+//   // utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForAn', arguments);
+//   // if (!targeting.isApntagDefined()) {
+//   //   utils.logError('window.apntag is not defined on the page');
+//   //   return;
+//   // }
+//
+//   targeting.setTargetingForAst();
+//
+//   // emit event
+//   events.emit(SET_TARGETING, targeting.getAllTargeting());
+// };
 
-  targeting.setTargetingForAst();
-
-  // emit event
-  events.emit(SET_TARGETING, targeting.getAllTargeting());
-};
-
-function emitAdRenderFail(reason, message, bid) {
-  const data = {};
-
-  data.reason = reason;
-  data.message = message;
-  if (bid) {
-    data.bid = bid;
-  }
-
-  utils.logError(message);
-  events.emit(AD_RENDER_FAILED, data);
-}
+// function emitAdRenderFail(reason, message, bid) {
+//   const data = {};
+//
+//   data.reason = reason;
+//   data.message = message;
+//   if (bid) {
+//     data.bid = bid;
+//   }
+//
+//   utils.logError(message);
+//   events.emit(AD_RENDER_FAILED, data);
+// }
 /**
  * This function will render the ad (based on params) in the given iframe document passed through.
  * Note that doc SHOULD NOT be the parent document page as we can't doc.write() asynchronously
@@ -230,7 +230,7 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
   // utils.logMessage('Calling renderAd with adId :' + id);
 
   if (doc && id) {
-    try {
+    // try {
       // lookup ad by ad Id
       const bid = auctionManager.findBidByAdId(id);
       if (bid) {
@@ -251,9 +251,9 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
 
         if (isRendererRequired(renderer)) {
           executeRenderer(renderer, bid);
-        } else if ((doc === document && !utils.inIframe()) || mediaType === 'video') {
+        // } else if ((doc === document && !utils.inIframe()) || mediaType === 'video') {
           // const message = `Error trying to write ad. Ad render call ad id ${id} was prevented from writing to the main document.`;
-          emitAdRenderFail(PREVENT_WRITING_ON_MAIN_DOCUMENT, ``, bid);
+          // emitAdRenderFail(PREVENT_WRITING_ON_MAIN_DOCUMENT, ``, bid);
         } else if (ad) {
           doc.write(ad);
           doc.close();
@@ -270,21 +270,21 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
           utils.insertElement(iframe, doc, 'body');
           setRenderSize(doc, width, height);
           utils.callBurl(bid);
-        } else {
+        // } else {
           // const message = `Error trying to write ad. No ad for bid response id: ${id}`;
-          emitAdRenderFail(NO_AD, ``, bid);
+          // emitAdRenderFail(NO_AD, ``, bid);
         }
-      } else {
+      // } else {
         // const message = `Error trying to write ad. Cannot find ad by given id : ${id}`;
-        emitAdRenderFail(CANNOT_FIND_AD, ``);
+        // emitAdRenderFail(CANNOT_FIND_AD, ``);
       }
-    } catch (e) {
+    // } catch (e) {
       // const message = `Error trying to write ad Id :${id} to the page:${e.message}`;
-      emitAdRenderFail(EXCEPTION, ``);
-    }
-  } else {
+      // emitAdRenderFail(EXCEPTION, ``);
+    // }
+  // } else {
     // const message = `Error trying to write ad Id :${id} to the page. Missing document or adId`;
-    emitAdRenderFail(MISSING_DOC_OR_ADID, ``);
+    // emitAdRenderFail(MISSING_DOC_OR_ADID, ``);
   }
 };
 
@@ -392,12 +392,12 @@ $$PREBID_GLOBAL$$.requestBids = createHook('asyncSeries', function ({ bidsBackHa
  * @alias module:pbjs.addAdUnits
  */
 $$PREBID_GLOBAL$$.addAdUnits = function (adUnitArr) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.addAdUnits', arguments);
-  if (utils.isArray(adUnitArr)) {
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.addAdUnits', arguments);
+  // if (utils.isArray(adUnitArr)) {
     $$PREBID_GLOBAL$$.adUnits.push.apply($$PREBID_GLOBAL$$.adUnits, adUnitArr);
-  } else if (typeof adUnitArr === 'object') {
-    $$PREBID_GLOBAL$$.adUnits.push(adUnitArr);
-  }
+  // } else if (typeof adUnitArr === 'object') {
+  //   $$PREBID_GLOBAL$$.adUnits.push(adUnitArr);
+  // }
   // emit event
   events.emit(ADD_AD_UNITS);
 };
@@ -418,20 +418,20 @@ $$PREBID_GLOBAL$$.addAdUnits = function (adUnitArr) {
  *
  * Currently `bidWon` is the only event that accepts an `id` parameter.
  */
-$$PREBID_GLOBAL$$.onEvent = function (event, handler, id) {
-  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.onEvent', arguments);
-  if (!utils.isFn(handler)) {
-    // utils.logError('The event handler provided is not a function and was not set on event "' + event + '".');
-    return;
-  }
-
-  if (id && !eventValidators[event].call(null, id)) {
-    // utils.logError('The id provided is not valid for event "' + event + '" and no handler was set.');
-    return;
-  }
-
-  events.on(event, handler, id);
-};
+// $$PREBID_GLOBAL$$.onEvent = function (event, handler, id) {
+//   // utils.logInfo('Invoking $$PREBID_GLOBAL$$.onEvent', arguments);
+//   if (!utils.isFn(handler)) {
+//     // utils.logError('The event handler provided is not a function and was not set on event "' + event + '".');
+//     return;
+//   }
+//
+//   if (id && !eventValidators[event].call(null, id)) {
+//     // utils.logError('The id provided is not valid for event "' + event + '" and no handler was set.');
+//     return;
+//   }
+//
+//   events.on(event, handler, id);
+// };
 
 /**
  * @param {string} event the name of the event
@@ -484,7 +484,7 @@ $$PREBID_GLOBAL$$.registerBidAdapter = function (bidderAdaptor, bidderCode) {
  * @return {Object} bidResponse [description]
  */
 $$PREBID_GLOBAL$$.createBid = function (statusCode) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.createBid', arguments);
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.createBid', arguments);
   return bidfactory.createBid(statusCode);
 };
 
@@ -526,11 +526,11 @@ $$PREBID_GLOBAL$$.createBid = function (statusCode) {
  * @alias module:pbjs.aliasBidder
  */
 $$PREBID_GLOBAL$$.aliasBidder = function (bidderCode, alias) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.aliasBidder', arguments);
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.aliasBidder', arguments);
   if (bidderCode && alias) {
     adaptermanager.aliasBidAdapter(bidderCode, alias);
-  } else {
-    utils.logError('bidderCode and alias must be passed as arguments', '$$PREBID_GLOBAL$$.aliasBidder');
+  // } else {
+  //   utils.logError('bidderCode and alias must be passed as arguments', '$$PREBID_GLOBAL$$.aliasBidder');
   }
 };
 
@@ -574,8 +574,7 @@ $$PREBID_GLOBAL$$.aliasBidder = function (bidderCode, alias) {
  * @return {Array<AdapterBidResponse>} A list of bids that have been rendered.
 */
 $$PREBID_GLOBAL$$.getAllWinningBids = function () {
-  return auctionManager.getAllWinningBids()
-    .map(removeRequestId);
+  return auctionManager.getAllWinningBids();
 };
 
 /**

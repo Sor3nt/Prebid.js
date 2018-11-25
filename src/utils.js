@@ -1051,9 +1051,9 @@ export function deletePropertyFromObject(object, prop) {
  * @param {Object} bid
  * @return {Object} bid
  */
-export function removeRequestId(bid) {
-  return exports.deletePropertyFromObject(bid, 'requestId');
-}
+// export function removeRequestId(bid) {
+//   return exports.deletePropertyFromObject(bid, 'requestId');
+// }
 
 /**
  * Checks input is integer or not
