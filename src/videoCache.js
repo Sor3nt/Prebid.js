@@ -116,17 +116,17 @@ function shimStorageCallback(done) {
  * @param {videoCacheStoreCallback} [done] An optional callback which should be executed after
  *   the data has been stored in the cache.
  */
-export function store(bids, done) {
-  const requestData = {
-    puts: bids.map(toStorageRequest)
-  };
+// export function store(bids, done) {
+//   const requestData = {
+//     puts: bids.map(toStorageRequest)
+//   };
+//
+//   ajax(config.getConfig('cache.url'), shimStorageCallback(done), JSON.stringify(requestData), {
+//     contentType: 'text/plain',
+//     withCredentials: true
+//   });
+// }
 
-  ajax(config.getConfig('cache.url'), shimStorageCallback(done), JSON.stringify(requestData), {
-    contentType: 'text/plain',
-    withCredentials: true
-  });
-}
-
-export function getCacheUrl(id) {
-  return `${config.getConfig('cache.url')}?uuid=${id}`;
-}
+// export function getCacheUrl(id) {
+//   return `${config.getConfig('cache.url')}?uuid=${id}`;
+// }

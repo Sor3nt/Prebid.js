@@ -65,14 +65,14 @@ export function newUserSync(userSyncDependencies) {
       return;
     }
 
-    try {
+    // try {
       // Image pixels
       fireImagePixels();
       // Iframe syncs
       loadIframes();
-    } catch (e) {
-      return utils.logError('Error firing user syncs', e);
-    }
+    // } catch (e) {
+    //   return utils.logError('Error firing user syncs', e);
+    // }
     // Reset the user sync queue
     queue = getDefaultQueue();
     hasFired = true;
@@ -92,7 +92,7 @@ export function newUserSync(userSyncDependencies) {
     // any preferential treatment and balancing them out
     utils.shuffle(queue.image).forEach((sync) => {
       let [bidderName, trackingPixelUrl] = sync;
-      utils.logMessage(`Invoking image pixel user sync for bidder: ${bidderName}`);
+      // utils.logMessage(`Invoking image pixel user sync for bidder: ${bidderName}`);
       // Create image object and add the src url
       utils.triggerPixel(trackingPixelUrl);
     });
@@ -110,7 +110,7 @@ export function newUserSync(userSyncDependencies) {
     // Randomize the order of these syncs just like the pixels above
     utils.shuffle(queue.iframe).forEach((sync) => {
       let [bidderName, iframeUrl] = sync;
-      utils.logMessage(`Invoking iframe user sync for bidder: ${bidderName}`);
+      // utils.logMessage(`Invoking iframe user sync for bidder: ${bidderName}`);
       // Insert iframe into DOM
       utils.insertUserSyncIframe(iframeUrl);
     });
@@ -146,24 +146,24 @@ export function newUserSync(userSyncDependencies) {
    * userSync.registerSync('image', 'rubicon', 'http://example.com/pixel')
    */
   publicApi.registerSync = (type, bidder, url) => {
-    if (!usConfig.syncEnabled || !utils.isArray(queue[type])) {
-      return utils.logWarn(`User sync type "${type}" not supported`);
-    }
-    if (!bidder) {
-      return utils.logWarn(`Bidder is required for registering sync`);
-    }
-    if (Number(numAdapterBids[bidder]) >= usConfig.syncsPerBidder) {
-      return utils.logWarn(`Number of user syncs exceeded for "${bidder}"`);
-    }
+    // if (!usConfig.syncEnabled || !utils.isArray(queue[type])) {
+    //   return utils.logWarn(`User sync type "${type}" not supported`);
+    // }
+    // if (!bidder) {
+    //   return utils.logWarn(`Bidder is required for registering sync`);
+    // }
+    // if (Number(numAdapterBids[bidder]) >= usConfig.syncsPerBidder) {
+    //   return utils.logWarn(`Number of user syncs exceeded for "${bidder}"`);
+    // }
 
-    if (usConfig.filterSettings) {
-      if (shouldBidderBeBlocked(type, bidder)) {
-        return utils.logWarn(`Bidder '${bidder}' is not permitted to register their userSync ${type} pixels as per filterSettings config.`);
-      }
-      // TODO remove this else if code that supports deprecated fields (sometime in 2.x); for now - only run if filterSettings config is not present
-    } else if (usConfig.enabledBidders && usConfig.enabledBidders.length && usConfig.enabledBidders.indexOf(bidder) < 0) {
-      return utils.logWarn(`Bidder "${bidder}" not permitted to register their userSync pixels.`);
-    }
+    // if (usConfig.filterSettings) {
+    //   // if (shouldBidderBeBlocked(type, bidder)) {
+    //   //   return utils.logWarn(`Bidder '${bidder}' is not permitted to register their userSync ${type} pixels as per filterSettings config.`);
+    //   // }
+    //   // TODO remove this else if code that supports deprecated fields (sometime in 2.x); for now - only run if filterSettings config is not present
+    // } else if (usConfig.enabledBidders && usConfig.enabledBidders.length && usConfig.enabledBidders.indexOf(bidder) < 0) {
+    //   return utils.logWarn(`Bidder "${bidder}" not permitted to register their userSync pixels.`);
+    // }
 
     // the bidder's pixel has passed all checks and is allowed to register
     queue[type].push([bidder, url]);
@@ -209,7 +209,7 @@ export function newUserSync(userSyncDependencies) {
    */
   function isFilterConfigValid(filterConfig, type) {
     if (filterConfig.all && filterConfig[type]) {
-      utils.logWarn(`Detected presence of the "filterSettings.all" and "filterSettings.${type}" in userSync config.  You cannot mix "all" with "iframe/image" configs; they are mutually exclusive.`);
+      // utils.logWarn(`Detected presence of the "filterSettings.all" and "filterSettings.${type}" in userSync config.  You cannot mix "all" with "iframe/image" configs; they are mutually exclusive.`);
       return false;
     }
 
@@ -226,12 +226,12 @@ export function newUserSync(userSyncDependencies) {
     let biddersField = activeConfig.bidders;
 
     if (filterField && filterField !== 'include' && filterField !== 'exclude') {
-      utils.logWarn(`UserSync "filterSettings.${activeConfigName}.filter" setting '${filterField}' is not a valid option; use either 'include' or 'exclude'.`);
+      // utils.logWarn(`UserSync "filterSettings.${activeConfigName}.filter" setting '${filterField}' is not a valid option; use either 'include' or 'exclude'.`);
       return false;
     }
 
     if (biddersField !== '*' && !(Array.isArray(biddersField) && biddersField.length > 0 && biddersField.every(bidderInList => utils.isStr(bidderInList) && bidderInList !== '*'))) {
-      utils.logWarn(`Detected an invalid setup in userSync "filterSettings.${activeConfigName}.bidders"; use either '*' (to represent all bidders) or an array of bidders.`);
+      // utils.logWarn(`Detected an invalid setup in userSync "filterSettings.${activeConfigName}.bidders"; use either '*' (to represent all bidders) or an array of bidders.`);
       return false;
     }
 

@@ -23,10 +23,10 @@ export function Renderer(options) {
   this.loaded = loaded;
   this.cmd = [];
   this.push = func => {
-    if (typeof func !== 'function') {
-      utils.logError('Commands given to Renderer.push must be wrapped in a function');
-      return;
-    }
+    // if (typeof func !== 'function') {
+    //   utils.logError('Commands given to Renderer.push must be wrapped in a function');
+    //   return;
+    // }
     this.loaded ? func.call() : this.cmd.push(func);
   };
 
@@ -39,8 +39,8 @@ export function Renderer(options) {
   if (!isRendererDefinedOnAdUnit(adUnitCode)) {
     // we expect to load a renderer url once only so cache the request to load script
     loadScript(url, this.callback, true);
-  } else {
-    utils.logWarn(`External Js not loaded by Renderer since renderer url and callback is already defined on adUnit ${adUnitCode}`);
+  // } else {
+  //   utils.logWarn(`External Js not loaded by Renderer since renderer url and callback is already defined on adUnit ${adUnitCode}`);
   }
 }
 
@@ -65,7 +65,7 @@ Renderer.prototype.handleVideoEvent = function({ id, eventName }) {
     this.handlers[eventName]();
   }
 
-  utils.logMessage(`Prebid Renderer event for id ${id} type ${eventName}`);
+  // utils.logMessage(`Prebid Renderer event for id ${id} type ${eventName}`);
 };
 
 /*
@@ -74,11 +74,11 @@ Renderer.prototype.handleVideoEvent = function({ id, eventName }) {
  */
 Renderer.prototype.process = function() {
   while (this.cmd.length > 0) {
-    try {
+    // try {
       this.cmd.shift().call();
-    } catch (error) {
-      utils.logError('Error processing Renderer command: ', error);
-    }
+    // } catch (error) {
+    //   utils.logError('Error processing Renderer command: ', error);
+    // }
   }
 };
 

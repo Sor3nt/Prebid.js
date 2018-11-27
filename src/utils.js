@@ -14,11 +14,11 @@ var tNumb = 'Number';
 var tObject = 'Object';
 var tBoolean = 'Boolean';
 var toString = Object.prototype.toString;
-let consoleExists = Boolean(window.console);
-let consoleLogExists = Boolean(consoleExists && window.console.log);
-let consoleInfoExists = Boolean(consoleExists && window.console.info);
-let consoleWarnExists = Boolean(consoleExists && window.console.warn);
-let consoleErrorExists = Boolean(consoleExists && window.console.error);
+// let consoleExists = Boolean(window.console);
+// let consoleLogExists = Boolean(consoleExists && window.console.log);
+// let consoleInfoExists = Boolean(consoleExists && window.console.info);
+// let consoleWarnExists = Boolean(consoleExists && window.console.warn);
+// let consoleErrorExists = Boolean(consoleExists && window.console.error);
 
 /*
  *   Substitutes into a string from a given map using the token
@@ -288,29 +288,29 @@ exports.getTopWindowReferrer = function() {
 /**
  * Wrappers to console.(log | info | warn | error). Takes N arguments, the same as the native methods
  */
-exports.logMessage = function () {
-  if (debugTurnedOn() && consoleLogExists) {
-    console.log.apply(console, decorateLog(arguments, 'MESSAGE:'));
-  }
-};
+// exports.logMessage = function () {
+//   if (debugTurnedOn() && consoleLogExists) {
+//     console.log.apply(console, decorateLog(arguments, 'MESSAGE:'));
+//   }
+// };
 
-exports.logInfo = function () {
-  if (debugTurnedOn() && consoleInfoExists) {
-    console.info.apply(console, decorateLog(arguments, 'INFO:'));
-  }
-};
-
-exports.logWarn = function () {
-  if (debugTurnedOn() && consoleWarnExists) {
-    console.warn.apply(console, decorateLog(arguments, 'WARNING:'));
-  }
-};
-
-exports.logError = function () {
-  if (debugTurnedOn() && consoleErrorExists) {
-    console.error.apply(console, decorateLog(arguments, 'ERROR:'));
-  }
-};
+// exports.logInfo = function () {
+//   if (debugTurnedOn() && consoleInfoExists) {
+//     console.info.apply(console, decorateLog(arguments, 'INFO:'));
+//   }
+// };
+//
+// exports.logWarn = function () {
+//   if (debugTurnedOn() && consoleWarnExists) {
+//     console.warn.apply(console, decorateLog(arguments, 'WARNING:'));
+//   }
+// };
+//
+// exports.logError = function () {
+//   if (debugTurnedOn() && consoleErrorExists) {
+//     console.error.apply(console, decorateLog(arguments, 'ERROR:'));
+//   }
+// };
 
 function decorateLog(args, prefix) {
   args = [].slice.call(args);
@@ -393,10 +393,10 @@ exports.hasValidBidRequest = function (paramObj, requiredParamsArr, adapter) {
 
     exports._each(paramObj, findParam);
 
-    if (!found) {
-      exports.logError('Params are missing for bid request. One of these required paramaters are missing: ' + requiredParamsArr, adapter);
-      return false;
-    }
+    // if (!found) {
+    //   exports.logError('Params are missing for bid request. One of these required paramaters are missing: ' + requiredParamsArr, adapter);
+    //   return false;
+    // }
   }
 
   return true;
@@ -678,7 +678,7 @@ exports.getIframeDocument = function (iframe) {
   }
 
   let doc;
-  try {
+  // try {
     if (iframe.contentWindow) {
       doc = iframe.contentWindow.document;
     } else if (iframe.contentDocument.document) {
@@ -686,9 +686,9 @@ exports.getIframeDocument = function (iframe) {
     } else {
       doc = iframe.contentDocument;
     }
-  } catch (e) {
-    exports.logError('Cannot get iframe document', e);
-  }
+  // } catch (e) {
+  //   exports.logError('Cannot get iframe document', e);
+  // }
 
   return doc;
 };
@@ -703,7 +703,7 @@ exports.getValueString = function(param, val, defaultValue) {
   if (exports.isNumber(val)) {
     return val.toString();
   }
-  exports.logWarn('Unsuported type for param: ' + param + ' required type: String');
+  // exports.logWarn('Unsuported type for param: ' + param + ' required type: String');
 };
 
 export function uniques(value, index, arry) {

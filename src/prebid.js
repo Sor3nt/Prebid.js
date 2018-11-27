@@ -162,11 +162,11 @@ $$PREBID_GLOBAL$$.getBidResponsesForAdUnitCode = function (adUnitCode) {
  * @alias module:pbjs.setTargetingForGPTAsync
  */
 $$PREBID_GLOBAL$$.setTargetingForGPTAsync = function (adUnit, customSlotMatching) {
-  utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForGPTAsync', arguments);
-  if (!isGptPubadsDefined()) {
-    utils.logError('window.googletag is not defined on the page');
-    return;
-  }
+  // utils.logInfo('Invoking $$PREBID_GLOBAL$$.setTargetingForGPTAsync', arguments);
+  // if (!isGptPubadsDefined()) {
+  //   utils.logError('window.googletag is not defined on the page');
+  //   return;
+  // }
 
   // get our ad unit codes
   let targetingSet = targeting.getAllTargeting(adUnit);
